@@ -14,7 +14,10 @@ class EventManagementApp(ctk.CTk):
 
         self.title("Hệ thống quản lý sự kiện và người tham dự")
         self.geometry("1100x650")
-        self.resizable(False, False)
+        self.resizable(True, True)
+        self.fullscreen_mode = False
+        self.after(100, lambda: self.state("zoomed"))
+        self.bind("<Escape>", lambda event: self.exit_fullscreen())
 
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
@@ -36,6 +39,17 @@ class EventManagementApp(ctk.CTk):
         )
         title.pack(pady=(30, 20))
 
+        self.fullscreen_button = ctk.CTkButton(
+            self.sidebar,
+            text="Toàn màn hình",
+            height=38,
+            corner_radius=10,
+            fg_color="#555555",
+            hover_color="#444444",
+            command=self.toggle_fullscreen
+        )
+        self.fullscreen_button.pack(fill="x", padx=20, pady=(0, 14))
+
         menu_items = {
             "Dashboard": "Tổng quan",
             "Events": "Sự kiện",
@@ -55,6 +69,17 @@ class EventManagementApp(ctk.CTk):
             button.pack(fill="x", padx=20, pady=8)
 
         self.show_page("Dashboard")
+
+    def toggle_fullscreen(self):
+        self.fullscreen_mode = not self.fullscreen_mode
+        self.attributes("-fullscreen", self.fullscreen_mode)
+        button_text = "Thoát toàn màn hình" if self.fullscreen_mode else "Toàn màn hình"
+        self.fullscreen_button.configure(text=button_text)
+
+    def exit_fullscreen(self):
+        self.fullscreen_mode = False
+        self.attributes("-fullscreen", False)
+        self.fullscreen_button.configure(text="Toàn màn hình")
 
     def clear_main_area(self):
         for widget in self.main_area.winfo_children():
@@ -119,8 +144,4 @@ if __name__ == "__main__":
     initialize_database()
     app = EventManagementApp()
     app.mainloop()
-
-
-
-
 
