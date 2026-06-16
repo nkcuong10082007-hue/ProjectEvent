@@ -1,0 +1,12 @@
+﻿.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.idea/
+.DS_Store
+
+# Database runtime file. Remove this line if the teacher wants sample data included.
+database/event_system.db
